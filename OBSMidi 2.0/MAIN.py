@@ -168,7 +168,6 @@ def press_button(Button, Event):
 #This function is to decide what to do depending on the fader that was sled
 def fader(Fader, Value):
 	#This is to find out what actions are supposed to be executed
-	ACTIONLIST = []
 	if "config_pad" in SETUP_JSON:
 		if "Faders" in SETUP_JSON["config_pad"]:
 			if Fader in SETUP_JSON["config_pad"]["Faders"]:
