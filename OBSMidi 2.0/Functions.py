@@ -27,6 +27,8 @@ def execute_action(Action, Value, ws, midi_out):
 			SetSourceVolume(Action, Value, ws)
 		elif Action["Action"] == "ToggleMuteSource":
 			ToggleMuteSource(Action, ws, midi_out)
+		elif Action["Action"] == "SetSceneCollection":
+			SetSceneCollection(Action, ws)
 		else:
 			print("Action unknown")
 	else:

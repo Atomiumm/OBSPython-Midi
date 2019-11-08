@@ -106,8 +106,8 @@ def Setup():
 		del config_general
 	else:
 		print("No general config in config file")
+	global config_pad
 	if "config_pad" in SETUP_JSON:
-		global config_pad
 		config_pad = SETUP_JSON["config_pad"]
 		del SETUP_JSON
 	else:
@@ -145,23 +145,30 @@ def Setup():
 
 
 	#Here we set up OBS like configured
+	OldSceneCollection = ws.call(requests.GetCurrentSceneCollection())
+	OldSceneCollection = OldSceneCollection.getScName()
 	SetSceneCollection({"SceneCollection" : SceneCollection})
-	#if StudioModeDefault == "True":
-	#	try:
-	#		ws.call(requests.EnableStudioMode())
-	#	except:
-	#		print("Couldn't turn Studio Mode on")
-	#	else:
-	#		PrintWithTime("Studio Mode turned on")    ---Causes Crash
-	#else:
-	#	try:
-	#		ws.call(requests.DisableStudioMode())
-	#	except:
-	#		print("Couldn't turn Studio Mode off")
-	#	else:
-	#		PrintWithTime("Studio Mode turned off")
+	#if str(CheckStudioState) != StudioModeDefault:
+	#	ToggleStudioMode({}, ws, midi_out)
 	SetTransition({"Transition":DefaultTransition, "TransitionDuration":DefaultTransitionDuration}, ws)
+	for key in config_pad:
+		for key2 in config_pad[key]:
+			for key3 in config_pad[key][key2]:
+				for Action in config_pad[key][key2][key3]:
+					if "SceneCollection" in Action:
+						if Action["SceneCollection"] == "Standard":
+							Action["SceneCollection"] = OldSceneCollection
+
+
+
 	PrintWithTime("Program is ready to use")
+
+
+
+
+
+
+
 
 
 
