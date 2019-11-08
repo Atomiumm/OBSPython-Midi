@@ -1,0 +1,118 @@
+{
+	"config_general" : {
+		"server_ip" : "localhost",
+		"server_port" : 4444,
+		"server_password" : "banana",
+		"ConfigName": "FrequenceBanane2",
+		"StudioModeDefault": "False",
+		"DefaultTransition" : "Fade",
+		"DefaultTransitionDuration" : 100,
+		"SceneCollection" : "FrequenceBanane"
+	},
+	"config_pad" : {
+		"Buttons" : {
+			"7" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "ToggleMuteSource"
+					}
+				]
+			},
+			"8" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "SwitchScene",
+						"DestinationScene" : "WebcamStudio"
+					}
+				]
+			},
+			"9" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "SwitchScene",
+						"DestinationScene" : "WebcamAnim"
+					}
+				]
+			},
+			"10" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "SwitchScene",
+						"DestinationScene" : "WebcamPerso1"
+					}
+				]
+			},
+			"11" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "SwitchScene",
+						"DestinationScene" : "WebcamPerso2"
+					}
+				]				
+			},
+			"15" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "SwitchScene",
+						"DestinationScene" : "FBanane",
+						"Transition" : "Fade",
+						"TransitionDuration" : 900
+					}
+				]
+			},
+			"16" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "TransitionToProgram",
+					}
+				]
+			},
+			"17" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "TransitionToProgram",
+						"Transition" : "Fade",
+						"TransitionDuration" : 900
+					}
+				]
+			},
+			"22":{
+				"ActionOnPress" : [
+					{
+						"Action" : "ToggleStream",
+						"Led" : 14,
+						"LedMode" : 2
+					}
+				]
+			},
+			"23":{
+				"ActionOnPress" : [
+					{
+						"Action" : "ToggleRecording",
+						"Led" : 15,
+						"LedMode" : 2
+					}
+				]
+			}
+		},
+		"Faders" : {
+			"8" : {
+				"ActionGeneral" : [
+					{
+						"Action" : "SetSourceVolume",
+						"MaxValue" : 1.0
+					}
+				]
+			},
+			"9" : {
+				"ActionGeneral" : [
+					{
+						"Action" : "SetTransitionDuration",
+						"MaxValue" : 1000,
+						"MinValue": 0
+					}
+				]
+			}
+		}
+	}
+}

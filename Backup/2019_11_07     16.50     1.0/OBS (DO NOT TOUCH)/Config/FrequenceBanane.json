@@ -1,0 +1,75 @@
+{
+	"config_general" : {
+		"ConfigName": "FrequenceBanane",
+		"StudioMode": "False",
+		"DefaultTransition" : "Cut",
+		"DefaultTransitionDuration" : 300,
+		"server_ip" : "localhost",
+		"server_port" : 4444,
+		"server_password" : "banana" 
+	},
+	"config_pad" : {
+		"Buttons" : {
+			"8":{
+				"Event" : "OnPress",
+				"Action" : "SwitchScene",
+				"DestinationScene" : "WebcamStudio"
+			},
+			"9":{
+				"Event" : "OnPress",
+				"Action" : "SwitchScene",
+				"DestinationScene" : "WebcamAnim"
+			},
+			"10":{
+				"Event" : "OnPress",
+				"Action" : "SwitchScene",
+				"DestinationScene" : "WebcamPerso1"
+			},
+			"11":{
+				"Event" : "OnPress",
+				"Action" : "SwitchScene",
+				"DestinationScene" : "WebcamPerso2"
+			},
+			"15":{
+				"Event" : "OnPress",
+				"Action" : "SwitchScene",
+				"DestinationScene" : "FBanane",
+				"Transition" : "Fade",
+				"TransitionDuration" : 900
+			},
+			"16":{
+				"Event" : "OnPress",
+				"Action" : "TransitionToProgram"
+			},
+			"19":{
+				"Event" : "OnPress",
+				"Action" : "SetTransition",
+				"Transition" : "Fade"
+			},
+			"20":{
+				"Event" : "OnPress",
+				"Action" : "SetTransition",
+				"Transition" : "Cut"
+			},
+			"22":{
+				"Event" : "OnPress",
+				"Action" : "ToggleStream",
+				"Led" : 14,
+				"LedMode" : 2
+			},
+			"23":{
+				"Event" : "OnPress",
+				"Action" : "ToggleRecording",
+				"Led" : 15,
+				"LedMode" : 2
+			}
+		},
+		"Faders" : {
+			"9":{
+				"Action" : "SetTransitionDuration",
+				"MaxValue" : 1000,
+				"MinValue": 0
+			}
+		}
+	}
+}
