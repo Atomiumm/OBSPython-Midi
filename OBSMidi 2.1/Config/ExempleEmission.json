@@ -1,0 +1,144 @@
+{
+	"config_general" : {
+		"server_ip" : "localhost",
+		"server_port" : 4444,
+		"server_password" : "banana",
+		"ConfigName": "ExempleEmission",
+		"StudioModeDefault": "True",
+		"DefaultTransition" : "Fade",
+		"DefaultTransitionDuration" : 150,
+		"SceneCollection" : "FrequenceBanane"
+	},
+	"config_pad" : {
+		"Buttons" : {
+			"0" : {
+				"ActionOnRelease" : [
+					{
+						"Action" : "SetSourceVolume",
+						"SourceName" : "Antenne",
+						"SourceVolume" : 0
+					},
+					{
+						"Action" : "SetSourceVolume",
+						"SourceName" : "PGM1",
+						"SourceVolume" : 1.0
+					},
+					{
+						"Action" : "TurnRecordingOn"
+					},
+					{
+						"Action" : "SwitchScene",
+						"DestinationScene" : "Standby",
+						"Transition" : "Fade",
+						"TransitionDuration" : 900
+					}
+				]
+			},
+			"1" : {
+				"ActionOnRelease" : [
+					{
+						"Action" : "SwitchScene",
+						"DestinationScene" : "FBanane",
+						"Transition" : "Fade",
+						"TransitionDuration" : 900
+					},
+					{
+						"Action" : "TurnRecordingOff"
+					},
+					{
+						"Action" : "SetSourceVolume",
+						"SourceName" : "PGM1",
+						"SourceVolume" : 0
+					},
+					{
+						"Action" : "SetSourceVolume",
+						"SourceName" : "Antenne",
+						"SourceVolume" : 1.0
+					},
+					{
+						"Action" : "SetSceneCollection",
+						"SceneCollection" : "Standard"
+					}
+				]
+			},
+			"8" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "SwitchScene",
+						"DestinationScene" : "WebcamStudio"
+					}
+				]
+			},
+			"9" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "SwitchScene",
+						"DestinationScene" : "WebcamAnim"
+					}
+				]
+			},
+			"10" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "SwitchScene",
+						"DestinationScene" : "WebcamPerso1"
+					}
+				]
+			},
+			"11" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "SwitchScene",
+						"DestinationScene" : "WebcamPerso2"
+					}
+				]				
+			},
+			"15" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "SwitchScene",
+						"DestinationScene" : "Standby",
+						"Transition" : "Fade",
+						"TransitionDuration" : 900
+					}
+				]
+			},
+			"16" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "TransitionToProgram",
+					}
+				]
+			},
+			"17" : {
+				"ActionOnPress" : [
+					{
+						"Action" : "TransitionToProgram",
+						"Transition" : "Fade",
+						"TransitionDuration" : 900
+					}
+				]
+			}
+		},
+		"Faders" : {
+			"8" : {
+				"ActionGeneral" : [
+					{
+						"Action" : "SetSourceVolume",
+						"SourceName" : "PGM1",
+						"MaxValue" : 1.0
+					}
+				]
+			},
+			"9" : {
+				"ActionGeneral" : [
+					{
+						"Action" : "SetTransitionDuration",
+						"MaxValue" : 900,
+						"MinValue": 0
+					}
+				]
+			}
+		}
+	}
+}
