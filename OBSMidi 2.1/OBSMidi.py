@@ -20,7 +20,7 @@ from obswebsocket import obsws, requests
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame.midi as midi
-from time import sleep
+import time
 import json
 import sys
 
@@ -52,12 +52,12 @@ def Setup():
 	try:
 		SETUP_JSON = json.loads(''.join(open("Config\\" + Filename + ".json", "r")))
 	except FileNotFoundError:
-		print("Config " + Filename + " not found")
-		print("Exiting program")
+		PrintError("Config " + Filename + " not found")
+		PrintError("Exiting program")
 		exit()
 	except:
-		print("Couldn't open " + Filename + ".json")
-		print("Exiting program")
+		PrintError("Couldn't open " + Filename + ".json")
+		PrintError("Exiting program")
 		exit()
 	else:
 		PrintWithTime("Opened config:  " + Filename)
@@ -68,52 +68,52 @@ def Setup():
 			global ConfigName
 			ConfigName = config_general["ConfigName"]
 		else:
-			print("ERROR 404:  ConfigName argument was not found")
+			PrintError("ERROR 404:  ConfigName argument was not found")
 		if "StudioModeDefault" in config_general:
 			global StudioModeDefault
 			StudioModeDefault = config_general["StudioModeDefault"]
 		else:
-			print("ERROR 404:  StudioModeDefault argument was not found")
+			PrintError("ERROR 404:  StudioModeDefault argument was not found")
 		if "DefaultTransition" in config_general:
 			global DefaultTransition
 			DefaultTransition = config_general["DefaultTransition"]
 		else:
-			print("ERROR 404:  DefaultTransition argument was not found")
+			PrintError("ERROR 404:  DefaultTransition argument was not found")
 		if "DefaultTransitionDuration" in config_general:
 			global DefaultTransitionDuration
 			DefaultTransitionDuration = config_general["DefaultTransitionDuration"]
 		else:
-			print("ERROR 404:  DefaultTransitionDuration argument was not found")
+			PrintError("ERROR 404:  DefaultTransitionDuration argument was not found")
 		if "server_ip" in config_general:
 			global server_ip
 			server_ip = config_general["server_ip"]
 		else:
-			print("ERROR 404:  server_ip argument was not found")
+			PrintError("ERROR 404:  server_ip argument was not found")
 		if "server_port" in config_general:
 			global server_port
 			server_port = config_general["server_port"]
 		else:
-			print("ERROR 404:  server_port argument as not found")
+			PrintError("ERROR 404:  server_port argument as not found")
 		if "server_password" in config_general:
 			global server_password
 			server_password = config_general["server_password"]
 		else:
-			print("ERROR 404  server_password argument was not found")
+			PrintError("ERROR 404  server_password argument was not found")
 		if "SceneCollection" in config_general:
 			global SceneCollection
 			SceneCollection = config_general["SceneCollection"]
 		else:
-			print("ERROR 404  SceneCollection argument was not found")
+			PrintError("ERROR 404  SceneCollection argument was not found")
 		del config_general
 	else:
-		print("No general config in config file")
+		PrintError("No general config in config file")
 	global config_pad
 	if "config_pad" in SETUP_JSON:
 		config_pad = SETUP_JSON["config_pad"]
 		del SETUP_JSON
 	else:
-		print("No pad config in config file")
-		print("Exiting program")
+		PrintError("No pad config in config file")
+		PrintError("Exiting program")
 		exit()
 
 
@@ -123,8 +123,8 @@ def Setup():
 		ws = obsws(server_ip, server_port, server_password)
 		ws.connect()
 	except:
-		print("Connection to OBS Websocket is impossible")
-		print("Exiting program")
+		PrintError("Connection to OBS Websocket is impossible")
+		PrintError("Exiting program")
 		exit()
 	else:
 		PrintWithTime("Connected to Websocket")
@@ -138,8 +138,8 @@ def Setup():
 		midi_in = midi.Input(1, 1024)
 		midi_out = midi.Output(3, 1024)
 	except:
-		print("Midi Pad not found")
-		print("Exiting program")
+		PrintError("Midi Pad not found")
+		PrintError("Exiting program")
 		exit()
 	else:
 		PrintWithTime("Connected Midi Pad")
@@ -147,8 +147,11 @@ def Setup():
 
 	#Here we set up OBS like configured
 	global OldSceneCollection
-	OldSceneCollection = ws.call(requests.GetCurrentSceneCollection())
-	OldSceneCollection = OldSceneCollection.getScName()
+	try:
+		OldSceneCollection = ws.call(requests.GetCurrentSceneCollection())
+		OldSceneCollection = OldSceneCollection.getScName()
+	except:
+		PrintError("Couldn't get scenecollection")
 	SetSceneCollection({"SceneCollection" : SceneCollection})
 	#if str(CheckStudioState()) != StudioModeDefault:
 	#	ToggleStudioMode({})
@@ -189,7 +192,7 @@ def CheckStudioState():
 		StudioState = ws.call(requests.GetStudioModeStatus())
 		StudioState = StudioState.getStudioMode()
 	except:
-		print("Couldn't get StudioModeStatus")
+		PrintError("Couldn't get StudioModeStatus")
 	else:
 		return StudioState
 
@@ -199,12 +202,17 @@ def PrintWithTime(Text):
 	print(Text) 
 
 
+def PrintError(Text):
+	print("ERROR", end = "	")
+	PrintWithTime(Text)
+
+
 def GetTransition():
 	Result = {}
 	try:
 		Transition = ws.call(requests.GetCurrentTransition())
 	except:
-		print("Couldn't get current transition")
+		PrintError("Couldn't get current transition")
 	else:
 		try:
 			Result["Transition"] = Transition.getName()
@@ -236,7 +244,7 @@ def SwitchScene(Action):
 		try:
 			ws.call(requests.SetPreviewScene(Action["DestinationScene"]))
 		except:
-			print("Couldn't set " + Action["DestinationScene"] + " to program")
+			PrintError("Couldn't set " + Action["DestinationScene"] + " to program")
 		else:
 			PrintWithTime("Set " + Action["DestinationScene"] + " to program")
 	else:
@@ -248,7 +256,7 @@ def SwitchScene(Action):
 		try:
 			ws.call(requests.SetCurrentScene(Action["DestinationScene"]))
 		except:
-			print("Couldn't set " + Action["DestinationScene"] + " to program")
+			PrintError("Couldn't set " + Action["DestinationScene"] + " to program")
 		else:
 			PrintWithTime("Set " + Action["DestinationScene"] + " to program")
 		#Here we set the transition mode back
@@ -257,7 +265,7 @@ def SwitchScene(Action):
 				Duration = ws.call(requests.GetTransitionDuration())
 				Duration = Duration.getTransitionDuration()
 			except:
-				print("Couldn't get transition duration")
+				PrintError("Couldn't get transition duration")
 			else:
 				time.sleep(Duration/1000 + 0.1)
 			finally:
@@ -269,11 +277,11 @@ def SetTransition(Action):
 		try:
 			ws.call(requests.SetCurrentTransition(Action["Transition"]))
 		except:
-			print("Couldn't set transition: " + Action["Transition"])
+			PrintError("Couldn't set transition: " + Action["Transition"])
 		else:
 			PrintWithTime("TransitionMode was changed to " + Action["Transition"])
 	else:
-		print("No transition set up in action config")
+		PrintError("No transition set up in action config")
 	if "TransitionDuration" in Action:
 		SetTransitionDuration(Action, None)
 
@@ -292,7 +300,7 @@ def SetTransitionDuration(Action, Value):
 	try:
 		ws.call(requests.SetTransitionDuration(Value))
 	except:
-		print("Couldn't set transition duration: " + str(Value) + "ms")
+		PrintError("Couldn't set transition duration: " + str(Value) + "ms")
 	else:
 		PrintWithTime("TransitionDuration was changed to " + str(Value) + "ms")
 
@@ -302,7 +310,7 @@ def TurnStreamOn(Action):
 		#Here we turn the stream on
 		ws.call(requests.StartStreaming())
 	except:
-		print("Couldn't start stream")
+		PrintError("Couldn't start stream")
 	else:
 		#Here we turn the Led on the midi pad on
 		MidiLed(Action, "on")
@@ -313,7 +321,7 @@ def TurnStreamOn(Action):
 				StreamingState = ws.call(requests.GetStreamingStatus())
 				StreamingState = StreamingState.getStreaming()
 			except:
-				print("Couldn't get streaming status")
+				PrintError("Couldn't get streaming status")
 				break
 		PrintWithTime("Started Streaming")
 
@@ -323,7 +331,7 @@ def TurnStreamOff(Action):
 		#Here we turn the stream off
 		ws.call(requests.StopStreaming())
 	except:
-		print("Couldn't stop stream")
+		PrintError("Couldn't stop stream")
 	else:
 		#Here we turn the Led on the midi pad off
 		MidiLed(Action, "off")
@@ -334,7 +342,7 @@ def TurnStreamOff(Action):
 				StreamingState = ws.call(requests.GetStreamingStatus())
 				StreamingState = StreamingState.getStreaming()
 			except:
-				print("Couldn't get streaming status")
+				PrintError("Couldn't get streaming status")
 				break
 		PrintWithTime("Stopped Streaming")
 
@@ -345,7 +353,7 @@ def ToggleStream(Action):
 		StreamingState = ws.call(requests.GetStreamingStatus())
 		StreamingState = StreamingState.getStreaming()
 	except:
-		print("Couldn't get streaming status")
+		PrintError("Couldn't get streaming status")
 	else:
 		if StreamingState == True:
 			TurnStreamOff(Action)
@@ -357,10 +365,10 @@ def TurnRecordingOn():
 	try:
 		Response = str(ws.call(requests.StartRecording()))
 	except:
-		print("Recording can't be turned on")
+		PrintError("Recording can't be turned on")
 	else:
 		if Response == "<StartRecording request ({}) called: failed ({'error': 'recording already active'})>":
-			print("Recording can't be turned on")
+			PrintError("Recording can't be turned on")
 		else:
 			MidiLed(Action, "on")
 			PrintWithTime("Recording started")
@@ -370,26 +378,26 @@ def TurnRecordingOff():
 	try:
 		Response = str(ws.call(requests.StopRecording()))
 	except:
-		print("Recording can't be turned off")
+		PrintError("Recording can't be turned off")
 	else:
 		if Response == "<StopRecording request ({}) called: success ({})>":
 			MidiLed(Action, "off")
 			PrintWithTime("Recording stopped")
 		else:
-			print("Recording can't be turned off")
+			PrintError("Recording can't be turned off")
 
 
 def ToggleRecording(Action):
 	try:
 		Response = str(ws.call(requests.StartRecording()))
 	except:
-		print("Recording can't be toggled")
+		PrintError("Recording can't be toggled")
 	else:
 		if Response == "<StartRecording request ({}) called: failed ({'error': 'recording already active'})>":
 			try:
 				ws.call(requests.StopRecording())
 			except:
-				print("Couldn't turn recording off")
+				PrintError("Couldn't turn recording off")
 			else:
 				MidiLed(Action, "off")
 				PrintWithTime("Recording stopped")
@@ -397,7 +405,7 @@ def ToggleRecording(Action):
 			MidiLed(Action, "on")
 			PrintWithTime("Recording started")
 		else:
-			print("Couldn't toggle recording")
+			PrintError("Couldn't toggle recording")
 
 
 def TransitionToProgram(Action):
@@ -415,7 +423,7 @@ def TransitionToProgram(Action):
 			Currentscene = CurrentsceneObject.getName()
 			ws.call(requests.SetCurrentScene(Currentscene))
 		except:
-			print("Couldn't send preview to program")
+			PrintError("Couldn't send preview to program")
 		else:
 			PrintWithTime("Sent preview to program")
 		#Here we set the transition mode back
@@ -424,13 +432,13 @@ def TransitionToProgram(Action):
 				Duration = ws.call(requests.GetTransitionDuration())
 				Duration = Duration.getTransitionDuration()
 			except:
-				print("Couldn't get transition duration")
+				PrintError("Couldn't get transition duration")
 			else:
 				time.sleep(Duration/1000 + 0.1)
 			finally:
 				SetTransition(Transition_old)
 	else:
-		print("StudioMode not enabled")
+		PrintError("StudioMode not enabled")
 
 #Causes crashes
 def ToggleStudioMode(Action):
@@ -439,7 +447,7 @@ def ToggleStudioMode(Action):
 		try:
 			ws.call(requests.DisableStudioMode())
 		except:
-			print("Couldn't turn Studio Mode off")
+			PrintError("Couldn't turn Studio Mode off")
 		else:
 			MidiLed(Action, "off")
 			PrintWithTime("Studio mode stopped")
@@ -447,7 +455,7 @@ def ToggleStudioMode(Action):
 		try:
 			ws.call(requests.EnableStudioMode())
 		except:
-			print("Couldn't turn Studio Mode on")
+			PrintError("Couldn't turn Studio Mode on")
 		else:
 			MidiLed(Action, "on")
 			PrintWithTime("Studio mode started")
@@ -468,11 +476,11 @@ def SetSourceVolume(Action, Value):
 		try:
 			ws.call(requests.SetVolume(Action["SourceName"], Value))
 		except:
-			print("Couldn't set source volume: " + str(Value * 100) + "%")
+			PrintError("Couldn't set source volume: " + str(Value * 100) + "%")
 		else:
 			PrintWithTime("Source volume was changed to " + str(Value * 100) + "%")
 	else:
-		print("No SourceName argument in action config")
+		PrintError("No SourceName argument in action config")
 
 #works but creates weird message
 def ToggleMuteSource(Action):
@@ -481,12 +489,12 @@ def ToggleMuteSource(Action):
 			MuteState = ws.call(requests.GetMute(Action["SourceName"]))
 			MuteState = MuteState.getMuted()
 		except:
-			print("Couldn't get mute state")
+			PrintError("Couldn't get mute state")
 		else:
 			try:
 				ws.call(requests.SetMute(Action["SourceName"], not MuteState))
 			except:
-				print("Couldn't toggle mute state of " + Action["SourceName"])
+				PrintError("Couldn't toggle mute state of " + Action["SourceName"])
 			else:
 				if MuteState == True:
 					MidiLed(Action, "off")
@@ -494,7 +502,7 @@ def ToggleMuteSource(Action):
 					MidiLed(Action, "on")
 				PrintWithTime("Toggled the mute state of " + Action["SourceName"])
 	else:
-		print("No SourceName argument in action config")
+		PrintError("No SourceName argument in action config")
 
 
 def SetSceneCollection(Action):
@@ -504,11 +512,11 @@ def SetSceneCollection(Action):
 		try:
 			ws.call(requests.SetCurrentSceneCollection(Action["SceneCollection"]))
 		except:
-			print("Couldn't set scene collection: " + Action["SceneCollection"])
+			PrintError("Couldn't set scene collection: " + Action["SceneCollection"])
 		else:
 			PrintWithTime("Set scene collection: " + Action["SceneCollection"])
 	else:
-		print("No SceneCollection argument in action config")
+		PrintError("No SceneCollection argument in action config")
 
 
 
@@ -551,9 +559,9 @@ def execute_action(Action, Value):
 		elif Action["Action"] == "SetSceneCollection":
 			SetSceneCollection(Action)
 		else:
-			print("Action unknown")
+			PrintError("Action unknown")
 	else:
-		print("No action argument in action config")
+		PrintError("No action argument in action config")
 
 
 
@@ -578,9 +586,9 @@ def press_button(Button, Event):
 					ACTIONLIST = config_pad["Buttons"][Button]["ActionOnRelease"]
 		else:
 			if Event == 154:
-				print("Button " + Button + " not configured")
+				PrintError("Button " + Button + " not configured")
 	else:
-		print("No buttons configured in config")
+		PrintError("No buttons configured in config")
 
 	#Here we execute the configured actions
 	for Action in ACTIONLIST:
@@ -604,9 +612,9 @@ def fader(Fader, Value):
 					for Action in config_pad["Faders"][Fader]["ActionOnMin"]:
 						execute_action(Action, None)
 		else:
-			print("Fader " + Fader + " not configured")
+			PrintError("Fader " + Fader + " not configured")
 	else:
-		print("No faders configured in config")
+		PrintError("No faders configured in config")
 
 
 
@@ -628,6 +636,6 @@ while True:
 			next_read = midi_read
 			while midi_in.poll():
 				next_read = midi_in.read(1)
-				sleep(0.01)
+				time.sleep(0.01)
 			fader(str(next_read[0][0][1]), next_read[0][0][2])
-	sleep(0.01)
+	time.sleep(0.01)
