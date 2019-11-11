@@ -482,6 +482,26 @@ def SetSourceVolume(Action, Value):
 	else:
 		PrintError("No SourceName argument in action config")
 
+#not tested
+def MuteSourceOn(Action):
+	if "SourceName" in Action:
+		try:
+			ws.call(requests.SetMute(Action["SourceName"], True))
+		except:
+			PrintError("Couldn't mute " + Action["SourceName"])
+	else:
+		PrintError("No SourceName argument in action config")
+
+#not tested
+def MuteSourceOff(Action):
+	if "SourceName" in Action:
+		try:
+			ws.call(requests.SetMute(Action["SourceName"], False))
+		except:
+			PrintError("Couldn't unmute " + Action["SourceName"])
+	else:
+		PrintError("No SourceName argument in action config")
+
 #works but creates weird message
 def ToggleMuteSource(Action):
 	if "SourceName" in Action:
@@ -554,6 +574,10 @@ def execute_action(Action, Value):
 		#	ToggleStudioMode(Action)
 		elif Action["Action"] == "SetSourceVolume":
 			SetSourceVolume(Action, Value)
+		elif Action["Action"] == "MuteSourceOn":
+			MuteSourceOn(Action)
+		elif Action["Action"] == "MuteSourceOff":
+			MuteSourceOff(Action)
 		elif Action["Action"] == "ToggleMuteSource":
 			ToggleMuteSource(Action)
 		elif Action["Action"] == "SetSceneCollection":
