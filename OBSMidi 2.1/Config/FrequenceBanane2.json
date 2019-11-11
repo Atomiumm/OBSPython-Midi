@@ -64,7 +64,7 @@
 			"16" : {
 				"ActionOnPress" : [
 					{
-						"Action" : "TransitionToProgram",
+						"Action" : "TransitionToProgram"
 					}
 				]
 			},
