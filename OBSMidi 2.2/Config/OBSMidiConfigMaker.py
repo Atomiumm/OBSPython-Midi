@@ -3,12 +3,14 @@ from guizero import *
 
 
 def Open_BC(value):
-	BC.show(wait=True)
-	print(value)
+	if value != "":
+		BC.show(wait=True)
+		print(value)
 
 def Open_FC(value):
-	FC.show(wait=True)
-	print(value)
+	if value != "":
+		FC.show(wait=True)
+		print(value)
 
 def ChangeLayerA():
 	LayerA.disable()
@@ -174,15 +176,15 @@ MAIN = App(title="Config Maker", layout="auto")
 
 PAD = Box(MAIN, align="top", layout="grid")
 
-Fader1 = PushButton(PAD, text="1", grid=[0, 0, 1, 2], command=lambda:Open_FC(Fader1.text), width=2, height=1)
-Fader2 = PushButton(PAD, text="2", grid=[1, 0, 1, 2], command=lambda:Open_FC(Fader2.text), width=2, height=1)
-Fader3 = PushButton(PAD, text="3", grid=[2, 0, 1, 2], command=lambda:Open_FC(Fader3.text), width=2, height=1)
-Fader4 = PushButton(PAD, text="4", grid=[3, 0, 1, 2], command=lambda:Open_FC(Fader4.text), width=2, height=1)
-Fader5 = PushButton(PAD, text="5", grid=[4, 0, 1, 2], command=lambda:Open_FC(Fader5.text), width=2, height=1)
-Fader6 = PushButton(PAD, text="6", grid=[5, 0, 1, 2], command=lambda:Open_FC(Fader6.text), width=2, height=1)
-Fader7 = PushButton(PAD, text="7", grid=[6, 0, 1, 2], command=lambda:Open_FC(Fader7.text), width=2, height=1)
-Fader8 = PushButton(PAD, text="8", grid=[7, 0, 1, 2], command=lambda:Open_FC(Fader8.text), width=2, height=1)
-Fader9 = PushButton(PAD, text="", grid=[8, 0, 1, 6], command=lambda:Open_FC(Fader9.text), width=2, height=7)
+Fader1   = PushButton(PAD, text="1", grid=[0, 0, 1, 2], command=lambda:Open_FC(Fader1.text), width=2, height=1)
+Fader2   = PushButton(PAD, text="2", grid=[1, 0, 1, 2], command=lambda:Open_FC(Fader2.text), width=2, height=1)
+Fader3   = PushButton(PAD, text="3", grid=[2, 0, 1, 2], command=lambda:Open_FC(Fader3.text), width=2, height=1)
+Fader4   = PushButton(PAD, text="4", grid=[3, 0, 1, 2], command=lambda:Open_FC(Fader4.text), width=2, height=1)
+Fader5   = PushButton(PAD, text="5", grid=[4, 0, 1, 2], command=lambda:Open_FC(Fader5.text), width=2, height=1)
+Fader6   = PushButton(PAD, text="6", grid=[5, 0, 1, 2], command=lambda:Open_FC(Fader6.text), width=2, height=1)
+Fader7   = PushButton(PAD, text="7", grid=[6, 0, 1, 2], command=lambda:Open_FC(Fader7.text), width=2, height=1)
+Fader8   = PushButton(PAD, text="8", grid=[7, 0, 1, 2], command=lambda:Open_FC(Fader8.text), width=2, height=1)
+Fader9   = PushButton(PAD, text="",  grid=[8, 0, 1, 6], command=lambda:Open_FC(Fader9.text), width=2, height=7)
 Fader1.hide()
 Fader2.hide()
 Fader3.hide()
@@ -192,16 +194,16 @@ Fader6.hide()
 Fader7.hide()
 Fader8.hide()
 
-Button0 = PushButton(PAD, text="0", grid=[0, 0, 1, 2], command=lambda:Open_BC(Button0.text), width=2, height=1)
-Button1 = PushButton(PAD, text="1", grid=[1, 0, 1, 2], command=lambda:Open_BC(Button1.text), width=2, height=1)
-Button2 = PushButton(PAD, text="2", grid=[2, 0, 1, 2], command=lambda:Open_BC(Button2.text), width=2, height=1)
-Button3 = PushButton(PAD, text="3", grid=[3, 0, 1, 2], command=lambda:Open_BC(Button3.text), width=2, height=1)
-Button4 = PushButton(PAD, text="4", grid=[4, 0, 1, 2], command=lambda:Open_BC(Button4.text), width=2, height=1)
-Button5 = PushButton(PAD, text="5", grid=[5, 0, 1, 2], command=lambda:Open_BC(Button5.text), width=2, height=1)
-Button6 = PushButton(PAD, text="6", grid=[6, 0, 1, 2], command=lambda:Open_BC(Button6.text), width=2, height=1)
-Button7 = PushButton(PAD, text="7", grid=[7, 0, 1, 2], command=lambda:Open_BC(Button7.text), width=2, height=1)
-Button8 = PushButton(PAD, text="8", grid=[0, 2, 1, 2], command=lambda:Open_BC(Button8.text), width=2, height=1)
-Button9 = PushButton(PAD, text="9", grid=[1, 2, 1, 2], command=lambda:Open_BC(Button9.text), width=2, height=1)
+Button0  = PushButton(PAD, text="0",  grid=[0, 0, 1, 2], command=lambda:Open_BC(Button0.text),  width=2, height=1)
+Button1  = PushButton(PAD, text="1",  grid=[1, 0, 1, 2], command=lambda:Open_BC(Button1.text),  width=2, height=1)
+Button2  = PushButton(PAD, text="2",  grid=[2, 0, 1, 2], command=lambda:Open_BC(Button2.text),  width=2, height=1)
+Button3  = PushButton(PAD, text="3",  grid=[3, 0, 1, 2], command=lambda:Open_BC(Button3.text),  width=2, height=1)
+Button4  = PushButton(PAD, text="4",  grid=[4, 0, 1, 2], command=lambda:Open_BC(Button4.text),  width=2, height=1)
+Button5  = PushButton(PAD, text="5",  grid=[5, 0, 1, 2], command=lambda:Open_BC(Button5.text),  width=2, height=1)
+Button6  = PushButton(PAD, text="6",  grid=[6, 0, 1, 2], command=lambda:Open_BC(Button6.text),  width=2, height=1)
+Button7  = PushButton(PAD, text="7",  grid=[7, 0, 1, 2], command=lambda:Open_BC(Button7.text),  width=2, height=1)
+Button8  = PushButton(PAD, text="8",  grid=[0, 2, 1, 2], command=lambda:Open_BC(Button8.text),  width=2, height=1)
+Button9  = PushButton(PAD, text="9",  grid=[1, 2, 1, 2], command=lambda:Open_BC(Button9.text),  width=2, height=1)
 Button10 = PushButton(PAD, text="10", grid=[2, 2, 1, 2], command=lambda:Open_BC(Button10.text), width=2, height=1)
 Button11 = PushButton(PAD, text="11", grid=[3, 2, 1, 2], command=lambda:Open_BC(Button11.text), width=2, height=1)
 Button12 = PushButton(PAD, text="12", grid=[4, 2, 1, 2], command=lambda:Open_BC(Button12.text), width=2, height=1)
@@ -217,8 +219,8 @@ Button21 = PushButton(PAD, text="21", grid=[5, 4, 1, 2], command=lambda:Open_BC(
 Button22 = PushButton(PAD, text="22", grid=[6, 4, 1, 2], command=lambda:Open_BC(Button22.text), width=2, height=1)
 Button23 = PushButton(PAD, text="23", grid=[7, 4, 1, 2], command=lambda:Open_BC(Button23.text), width=2, height=1)
 
-LayerA = PushButton(PAD, text="LA", grid=[9, 1, 1, 2], command=ChangeLayerA, width=2, height=1, enabled=False)
-LayerB = PushButton(PAD, text="LB", grid=[9, 3, 1, 2], command=ChangeLayerB, width=2, height=1, enabled=True)
+LayerA   = PushButton(PAD, text="LA", grid=[9, 1, 1, 2], command=ChangeLayerA, width=2, height=1, enabled=False)
+LayerB   = PushButton(PAD, text="LB", grid=[9, 3, 1, 2], command=ChangeLayerB, width=2, height=1, enabled=True)
 
 ButtonOrFader = ButtonGroup(PAD, options=["Buttons", "Faders"], grid=[0, 6, 9, 1], selected="Buttons", horizontal=True, command=lambda:ToggleButtonsFaders(ButtonOrFader.value_text))
 
