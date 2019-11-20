@@ -1,6 +1,23 @@
 from guizero import *
 
 
+JSON = {
+	"config_general" : {
+		"server_ip" : "localhost",
+		"server_port" : 4444,
+		"server_password" : "banana",
+		},
+	"config_pad" : {
+		"Buttons":{
+
+		},
+		"Faders":{
+
+		}
+	}
+}
+
+
 
 def Open_BC(value):
 	if value != "":
@@ -173,6 +190,10 @@ def ToggleButtonsFaders(value):
 
 
 MAIN = App(title="Config Maker", layout="auto")
+
+CONFIGNAME = Box(MAIN, align="top", layout="grid")
+CONFIGNAMEText = Text(CONFIGNAME, grid=[0, 0], text="Name of configuration: ", size=15, width=20, height=3)
+CONFIGNAME = TextBox(CONFIGNAME, grid=[1, 0], width=20, height=3)
 
 PAD = Box(MAIN, align="top", layout="grid")
 
