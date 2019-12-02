@@ -6,6 +6,11 @@ JSON = {
 		"server_ip" : "localhost",
 		"server_port" : 4444,
 		"server_password" : "banana",
+		"ConfigName": "",
+		"StudioModeDefault": "False",
+		"DefaultTransition" : "Cut",
+		"DefaultTransitionDuration" : 300,
+		"SceneCollection" : "FrequenceBanane"
 		},
 	"config_pad" : {
 		"Buttons":{
@@ -75,6 +80,11 @@ def ToggleButtonsFaders(value):
 		ChangeLayerA()
 
 
+def SetConfigGeneral(variable, value):
+	JSON["config_general"][variable] = value
+	print(JSON)
+
+
 
 
 
@@ -84,7 +94,7 @@ MAIN = App(title="Config Maker", layout="auto")
 
 CONFIGNAMEBox = Box(MAIN, align="top", layout="grid")
 CONFIGNAMEText = Text(CONFIGNAMEBox, grid=[0, 0], text="Name of configuration: ", size=15, width=20, height=3)
-CONFIGNAME = TextBox(CONFIGNAMEBox, grid=[1, 0], width=20, height=3)
+CONFIGNAME = TextBox(CONFIGNAMEBox, grid=[1, 0], width=20, height=3, command=lambda:SetConfigGeneral("ConfigName", CONFIGNAME.value))
 
 PAD = Box(MAIN, align="top", layout="grid")
 
@@ -133,14 +143,15 @@ LayerB   = PushButton(PAD, text="LB", grid=[9, 3, 1, 2], command=ChangeLayerB, w
 ButtonOrFader = ButtonGroup(PAD, options=["Buttons", "Faders"], grid=[0, 6, 9, 1], selected="Buttons", horizontal=True, command=lambda:ToggleButtonsFaders(ButtonOrFader.value_text))
 
 GENERALCONFIG = Box(MAIN, align="top", layout="grid")
-STUDIOMODEDEFAULTText = Text(GENERALCONFIG, grid=[0, 0], text="StudioMode default:", size=11)
-STUDIOMODEDEFAULT = ButtonGroup(GENERALCONFIG, options=["True", "False"], grid=[1, 0], selected="False", horizontal=True,)
-DEFAULTTRANSITIONText = Text(GENERALCONFIG, grid=[0, 1], text="Default transition:", size=11)
-DEFAULTTRANSITION = ButtonGroup(GENERALCONFIG, options=["Cut", "Fade"], grid=[1, 1], selected="Cut", horizontal=True,)
-DEFAULTTRANSITIONTRANSITIONDURATIONText = Text(GENERALCONFIG, grid=[0, 2], text="Default transition duration:", size=11)
-DEFAULTTRANSITIONTRANSITIONDURATION = Slider(GENERALCONFIG, grid=[1, 2], start=0, end=2000, width=200)
-SCENECOLLECTIONText = Text(GENERALCONFIG, grid=[0, 3], text="Scene collection:", size=11)
-SCENECOLLECTION = TextBox(GENERALCONFIG, grid=[1, 3], width=25)
+STUDIOMODEDEFAULTText = Text(GENERALCONFIG, grid=[0, 0], text="StudioMode default:", size=11, height=2)
+STUDIOMODEDEFAULT = ButtonGroup(GENERALCONFIG, options=["True", "False"], grid=[1, 0], selected="False", horizontal=True, command=lambda:SetConfigGeneral("StudioModeDefault", STUDIOMODEDEFAULT.value_text))
+DEFAULTTRANSITIONText = Text(GENERALCONFIG, grid=[0, 1], text="Default transition:", size=11, height=2)
+DEFAULTTRANSITION = ButtonGroup(GENERALCONFIG, options=["Cut", "Fade"], grid=[1, 1], selected="Cut", horizontal=True, command=lambda:SetConfigGeneral("DefaultTransition", DEFAULTTRANSITION.value_text))
+DEFAULTTRANSITIONTRANSITIONDURATIONText = Text(GENERALCONFIG, grid=[0, 2], text="Default transition duration:", size=11, height=2)
+DEFAULTTRANSITIONTRANSITIONDURATION = Slider(GENERALCONFIG, grid=[1, 2], start=0, end=2000, width=200, command=lambda:SetConfigGeneral("DefaultTransitionDuration", DEFAULTTRANSITIONTRANSITIONDURATION.value))
+DEFAULTTRANSITIONTRANSITIONDURATION.value = "300"
+SCENECOLLECTIONText = Text(GENERALCONFIG, grid=[0, 3], text="Scene collection:", size=11, height=2)
+SCENECOLLECTION = TextBox(GENERALCONFIG, grid=[1, 3], width=25, text="FrequenceBanane", command=lambda:SetConfigGeneral("SceneCollection", SCENECOLLECTION.value))
 
 
 
@@ -150,9 +161,11 @@ BCNumber = Text(BC, text="Button ", align="top", size=15)
 
 
 
+
+
 FC = Window(MAIN, title="Fader Config")
 FC.hide()
-FCNumber = Text(BC, test="Fader ", align=top, size=15)
+FCNumber = Text(FC, text="Fader ", align="top", size=15)
 
 
 
