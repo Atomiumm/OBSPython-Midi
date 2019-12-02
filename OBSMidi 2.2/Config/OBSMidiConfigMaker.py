@@ -21,163 +21,54 @@ JSON = {
 
 def Open_BC(value):
 	if value != "":
+		BCNumber.value = "Button " + str(value)
 		BC.show(wait=True)
-		print(value)
 
 def Open_FC(value):
 	if value != "":
+		FCNumber.value = "Fader " + str(value)
 		FC.show(wait=True)
-		print(value)
+
 
 def ChangeLayerA():
 	LayerA.disable()
 	if ButtonOrFader.value_text == "Buttons":
-		Button0.text  = "0"
-		Button1.text  = "1"
-		Button2.text  = "2"
-		Button3.text  = "3"
-		Button4.text  = "4"
-		Button5.text  = "5"
-		Button6.text  = "6"
-		Button7.text  = "7"
-		Button8.text  = "8"
-		Button9.text  = "9"
-		Button10.text = "10"
-		Button11.text = "11"
-		Button12.text = "12"
-		Button13.text = "13"
-		Button14.text = "14"
-		Button15.text = "15"
-		Button16.text = "16"
-		Button17.text = "17"
-		Button18.text = "18"
-		Button19.text = "19"
-		Button20.text = "20"
-		Button21.text = "21"
-		Button22.text = "22"
-		Button23.text = "23"
-		Fader9.text   = ""
+		for i in range(0, 24):
+			Buttons[i].text = str(i)
+		Fader9.text = ""
 	else:
-		Fader1.text   = "1"
-		Fader2.text   = "2"
-		Fader3.text   = "3"
-		Fader4.text   = "4"
-		Fader5.text   = "5"
-		Fader6.text   = "6"
-		Fader7.text   = "7"
-		Fader8.text   = "8"
-		Fader9.text   = "9"
-		Button8.text  = ""
-		Button9.text  = ""
-		Button10.text = ""
-		Button11.text = ""
-		Button12.text = ""
-		Button13.text = ""
-		Button14.text = ""
-		Button15.text = ""
-		Button16.text = ""
-		Button17.text = ""
-		Button18.text = ""
-		Button19.text = ""
-		Button20.text = ""
-		Button21.text = ""
-		Button22.text = ""
-		Button23.text = ""
+		for i in range(0, 9):
+			Faders[i].text = str(i + 1)
+		for i in range(8, 24):
+			Buttons[i].text = ""
 	LayerB.enable()
 
 def ChangeLayerB():
 	LayerB.disable()
 	if ButtonOrFader.value_text == "Buttons":
-		Button0.text  = "24"
-		Button1.text  = "25"
-		Button2.text  = "26"
-		Button3.text  = "27"
-		Button4.text  = "28"
-		Button5.text  = "29"
-		Button6.text  = "30"
-		Button7.text  = "31"
-		Button8.text  = "32"
-		Button9.text  = "33"
-		Button10.text = "34"
-		Button11.text = "35"
-		Button12.text = "36"
-		Button13.text = "37"
-		Button14.text = "38"
-		Button15.text = "39"
-		Button16.text = "40"
-		Button17.text = "41"
-		Button18.text = "42"
-		Button19.text = "43"
-		Button20.text = "44"
-		Button21.text = "45"
-		Button22.text = "46"
-		Button23.text = "47"
+		for i in range(0, 24):
+			Buttons[i].text = str(i + 24)
 		Fader9.text   = ""
 	else:
-		Fader1.text   = "11"
-		Fader2.text   = "12"
-		Fader3.text   = "13"
-		Fader4.text   = "14"
-		Fader5.text   = "15"
-		Fader6.text   = "16"
-		Fader7.text   = "17"
-		Fader8.text   = "18"
+		for i in range(0, 8):
+			Faders[i].text = str(i + 11)
 		Fader9.text   = "10"
-		Button8.text  = ""
-		Button9.text  = ""
-		Button10.text = ""
-		Button11.text = ""
-		Button12.text = ""
-		Button13.text = ""
-		Button14.text = ""
-		Button15.text = ""
-		Button16.text = ""
-		Button17.text = ""
-		Button18.text = ""
-		Button19.text = ""
-		Button20.text = ""
-		Button21.text = ""
-		Button22.text = ""
-		Button23.text = ""
-
+		for i in range(8, 24):
+			Buttons[i].text = ""
 	LayerA.enable()
 
 def ToggleButtonsFaders(value):
 	if value == "Buttons":
-		Fader1.hide()
-		Fader2.hide()
-		Fader3.hide()
-		Fader4.hide()
-		Fader5.hide()
-		Fader6.hide()
-		Fader7.hide()
-		Fader8.hide()
-		Button0.show()
-		Button1.show()
-		Button2.show()
-		Button3.show()
-		Button4.show()
-		Button5.show()
-		Button6.show()
-		Button7.show()
+		for i in range(0, 8):
+			Faders[i].hide()
+		for i in range(0, 8):
+			Buttons[i].show()
 	else:
-		Fader1.show()
-		Fader2.show()
-		Fader3.show()
-		Fader4.show()
-		Fader5.show()
-		Fader6.show()
-		Fader7.show()
-		Fader8.show()
-		Button0.hide()
-		Button1.hide()
-		Button2.hide()
-		Button3.hide()
-		Button4.hide()
-		Button5.hide()
-		Button6.hide()
-		Button7.hide()
-		
+		for i in range(0, 8):
+			Faders[i].show()
+		for i in range(0, 8):
+			Buttons[i].hide()
+
 	if LayerA.enabled == True:
 		ChangeLayerB()
 	else:
@@ -191,9 +82,9 @@ def ToggleButtonsFaders(value):
 
 MAIN = App(title="Config Maker", layout="auto")
 
-CONFIGNAME = Box(MAIN, align="top", layout="grid")
-CONFIGNAMEText = Text(CONFIGNAME, grid=[0, 0], text="Name of configuration: ", size=15, width=20, height=3)
-CONFIGNAME = TextBox(CONFIGNAME, grid=[1, 0], width=20, height=3)
+CONFIGNAMEBox = Box(MAIN, align="top", layout="grid")
+CONFIGNAMEText = Text(CONFIGNAMEBox, grid=[0, 0], text="Name of configuration: ", size=15, width=20, height=3)
+CONFIGNAME = TextBox(CONFIGNAMEBox, grid=[1, 0], width=20, height=3)
 
 PAD = Box(MAIN, align="top", layout="grid")
 
@@ -206,14 +97,9 @@ Fader6   = PushButton(PAD, text="6", grid=[5, 0, 1, 2], command=lambda:Open_FC(F
 Fader7   = PushButton(PAD, text="7", grid=[6, 0, 1, 2], command=lambda:Open_FC(Fader7.text), width=2, height=1)
 Fader8   = PushButton(PAD, text="8", grid=[7, 0, 1, 2], command=lambda:Open_FC(Fader8.text), width=2, height=1)
 Fader9   = PushButton(PAD, text="",  grid=[8, 0, 1, 6], command=lambda:Open_FC(Fader9.text), width=2, height=7)
-Fader1.hide()
-Fader2.hide()
-Fader3.hide()
-Fader4.hide()
-Fader5.hide()
-Fader6.hide()
-Fader7.hide()
-Fader8.hide()
+Faders   = [Fader1, Fader2, Fader3, Fader4, Fader5, Fader6, Fader7, Fader8, Fader9]
+for i in range(0, 8):
+	Faders[i].hide()
 
 Button0  = PushButton(PAD, text="0",  grid=[0, 0, 1, 2], command=lambda:Open_BC(Button0.text),  width=2, height=1)
 Button1  = PushButton(PAD, text="1",  grid=[1, 0, 1, 2], command=lambda:Open_BC(Button1.text),  width=2, height=1)
@@ -239,21 +125,34 @@ Button20 = PushButton(PAD, text="20", grid=[4, 4, 1, 2], command=lambda:Open_BC(
 Button21 = PushButton(PAD, text="21", grid=[5, 4, 1, 2], command=lambda:Open_BC(Button21.text), width=2, height=1)
 Button22 = PushButton(PAD, text="22", grid=[6, 4, 1, 2], command=lambda:Open_BC(Button22.text), width=2, height=1)
 Button23 = PushButton(PAD, text="23", grid=[7, 4, 1, 2], command=lambda:Open_BC(Button23.text), width=2, height=1)
+Buttons  = [Button0, Button1, Button2, Button3, Button4, Button5, Button6, Button7, Button8, Button9, Button10, Button11, Button12, Button13, Button14, Button15, Button16, Button17, Button18, Button19, Button20, Button21, Button22, Button23]
 
 LayerA   = PushButton(PAD, text="LA", grid=[9, 1, 1, 2], command=ChangeLayerA, width=2, height=1, enabled=False)
 LayerB   = PushButton(PAD, text="LB", grid=[9, 3, 1, 2], command=ChangeLayerB, width=2, height=1, enabled=True)
 
 ButtonOrFader = ButtonGroup(PAD, options=["Buttons", "Faders"], grid=[0, 6, 9, 1], selected="Buttons", horizontal=True, command=lambda:ToggleButtonsFaders(ButtonOrFader.value_text))
 
+GENERALCONFIG = Box(MAIN, align="top", layout="grid")
+STUDIOMODEDEFAULTText = Text(GENERALCONFIG, grid=[0, 0], text="StudioMode default:", size=11)
+STUDIOMODEDEFAULT = ButtonGroup(GENERALCONFIG, options=["True", "False"], grid=[1, 0], selected="False", horizontal=True,)
+DEFAULTTRANSITIONText = Text(GENERALCONFIG, grid=[0, 1], text="Default transition:", size=11)
+DEFAULTTRANSITION = ButtonGroup(GENERALCONFIG, options=["Cut", "Fade"], grid=[1, 1], selected="Cut", horizontal=True,)
+DEFAULTTRANSITIONTRANSITIONDURATIONText = Text(GENERALCONFIG, grid=[0, 2], text="Default transition duration:", size=11)
+DEFAULTTRANSITIONTRANSITIONDURATION = Slider(GENERALCONFIG, grid=[1, 2], start=0, end=2000, width=200)
+SCENECOLLECTIONText = Text(GENERALCONFIG, grid=[0, 3], text="Scene collection:", size=11)
+SCENECOLLECTION = TextBox(GENERALCONFIG, grid=[1, 3], width=25)
+
 
 
 BC = Window(MAIN, title="Button Config")
 BC.hide()
+BCNumber = Text(BC, text="Button ", align="top", size=15)
 
 
 
 FC = Window(MAIN, title="Fader Config")
 FC.hide()
+FCNumber = Text(BC, test="Fader ", align=top, size=15)
 
 
 
