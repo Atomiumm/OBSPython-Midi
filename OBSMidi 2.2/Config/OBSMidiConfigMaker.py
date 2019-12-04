@@ -109,13 +109,62 @@ def SelectAction(value):
 	if value in ["ToggleMuteSource", "ToggleRecording", "ToggleStream"]:
 		for i in [LEDText, LED, LEDMODEText, LEDMODE]:
 			i.show()
+		LED.hide()
+		LEDText.hide()
 		LED.value = 0
-		LEDMODE.value = 1
+		LEDMODE.value = "None"
 	if value == "SetSceneCollection":
 		for i in [SCENECOLLECTIONText, SCENECOLLECTION]:
 			i.show()
 		SCENECOLLECTION.value = "FrequenceBanane"
 
+def SelectTransition(value):
+	for i in [TRANSITIONDURATIONText, TRANSITIONDURATION]:
+		i.hide()
+	if value not in ["None", "Cut"]:
+		for i in [TRANSITIONDURATIONText, TRANSITIONDURATION]:
+			i.show()
+		TRANSITIONDURATION.value = 300
+
+
+def RemoveFromOnPress():
+	item = {}
+	if ACTION.value != "None":
+		Button = int(BCNumber.value[7:9])
+		item["Action"] = ACTION.value
+		if DESTINATIONSCENE.visible:
+			if DESTINATIONSCENE.value != "":
+				item["DestinationScene"] = DESTINATIONSCENE.value
+		if SOURCENAME.visible:
+			if SOURCENAME.value != "":
+				item["SourceName"] = SOURCENAME.value
+		if TRANSITION.visible:
+			if TRANSITION.value != "None":
+				item["Transition"] = TRANSITION.value
+		if TRANSITIONDURATION.visible:
+			item["TransitionDuration"] = TRANSITIONDURATION.value
+		if SOURCEVOLUME.visible:
+			item["SourceVolume"] = SOURCEVOLUME.value
+		if LEDMODE.visible:
+			if LEDMODE.value != "None":
+				if Button > 23:
+					Led = Button - 32
+				else:
+					Led = Button - 8
+				if Led >= 0:
+					item["Led"] = Led
+					if LEDMODE.value == "Off":
+						item["LedMode"] = 0
+					if LEDMODE.value == "On":
+						item["LedMode"] = 1
+					if LEDMODE.value == "Blinking":
+						item["LedMode"] = 2
+		if SCENECOLLECTION.visible:
+			if SCENECOLLECTION.value != "":
+				item["SourceName"] = SCENECOLLECTION.value
+
+		#JSON["config_pad"]["Buttons"][str(Button)]["ActionOnPress"].append(item)
+	BC.info("info", str(item))
 
 
 
@@ -196,30 +245,34 @@ ACTIONDEFINITION = Box(BCBOX, grid=[0, 0], layout="grid")
 ACTIONText = Text(ACTIONDEFINITION, grid=[0, 0], text="Action:", size=11, height=2)
 ACTION = Combo(ACTIONDEFINITION, grid=[1, 0], options=["None", "MuteSourceOff", "MuteSourceOn", "SetSceneCollection", "SetSourceVolume", "SetTransition", "SetTransitionDuration", "SwitchScene", "ToggleMuteSource", "ToggleRecording", "ToggleStream", "TransitionToProgram", "TurnRecordingOff", "TurnRecordingOn", "TurnStreamOff", "TurnStreamOn"], command=lambda:SelectAction(ACTION.value))
 DESTINATIONSCENEText = Text(ACTIONDEFINITION, grid=[0, 1], text="Destination Scene:", size=11, height=2)
-DESTINATIONSCENE = TextBox(ACTIONDEFINITION, grid=[1, 1], command=lambda:print("hello"))
+DESTINATIONSCENE = TextBox(ACTIONDEFINITION, grid=[1, 1])
 SOURCENAMEText = Text(ACTIONDEFINITION, grid=[0, 2], text="Source name:", size=11, height=2)
-SOURCENAME = TextBox(ACTIONDEFINITION, grid=[1, 2], command=lambda:print("hello"))
+SOURCENAME = TextBox(ACTIONDEFINITION, grid=[1, 2])
 TRANSITIONText = Text(ACTIONDEFINITION, grid=[0, 3], text="Transition:", size=11, height=2)
-TRANSITION = Combo(ACTIONDEFINITION, grid=[1, 3], options=["None", "Cut", "Fade"], command=lambda:print("hello"))
+TRANSITION = Combo(ACTIONDEFINITION, grid=[1, 3], options=["None", "Cut", "Fade"], command=lambda:SelectTransition(TRANSITION.value))
 TRANSITIONDURATIONText = Text(ACTIONDEFINITION, grid=[0, 4], text="Transition duration:", size=11, height=2)
-TRANSITIONDURATION = Slider(ACTIONDEFINITION, grid=[1, 4], start=0, end=1000, command=lambda:print("hello"))
+TRANSITIONDURATION = Slider(ACTIONDEFINITION, grid=[1, 4], start=0, end=1000)
 SOURCEVOLUMEText = Text(ACTIONDEFINITION, grid=[0, 5], text="Source volume:", size=11, height=2)
-SOURCEVOLUME = Slider(ACTIONDEFINITION, grid=[1, 5], start=0, end=100, command=lambda:print("hello"))
+SOURCEVOLUME = Slider(ACTIONDEFINITION, grid=[1, 5], start=0, end=100)
 LEDText = Text(ACTIONDEFINITION, grid=[0, 6], text="LED:", size=11, height=2)
 LED = Slider(ACTIONDEFINITION, grid=[1, 6], start=0, end=15, command=lambda:print("hello"))
 LEDMODEText = Text(ACTIONDEFINITION, grid=[0, 7], text="LED Mode:", size=11, height=2)
-LEDMODE = Slider(ACTIONDEFINITION, grid=[1, 7], start=0, end=2, command=lambda:print("hello"))
+LEDMODE = Combo(ACTIONDEFINITION, grid=[1, 7], options=["None", "Off", "On", "Blinking"])
 SCENECOLLECTIONText = Text(ACTIONDEFINITION, grid=[0, 8], text="Scene collection:", size=11, height=2)
-SCENECOLLECTION = TextBox(ACTIONDEFINITION, grid=[1, 8], command=lambda:print("hello"))
+SCENECOLLECTION = TextBox(ACTIONDEFINITION, grid=[1, 8])
 SelectAction("None")
 
 BCBOXSPACE = Box(BCBOX, grid=[1, 0], width=50)
 
 ACTIONS = Box(BCBOX, grid=[2, 0], layout="grid")
-ONPRESSText = Text(ACTIONS, text="On Press", grid=[0, 0], size=11)
-ONPRESS = ListBox(ACTIONS, items=[], grid=[0, 1], command=lambda:SeeElement())
-ONPRESSText = Text(ACTIONS, text="On Release", grid=[0, 2], size=11)
-ONRELEASE = ListBox(ACTIONS, items=[], grid=[0, 3], command=lambda:SeeElement())
+ONPRESSText = Text(ACTIONS, text="On Press", grid=[0, 0, 2, 1], size=11)
+ONPRESS = ListBox(ACTIONS, items=[], grid=[0, 1, 2, 1], command=lambda:SeeElement())
+REMOVEFROMONPRESS = PushButton(ACTIONS, text="-", grid=[0, 2, 1, 1], width=5, command=RemoveFromOnPress)
+ADDTOONPRESS = PushButton(ACTIONS, text="+", grid=[1, 2, 1, 1], width=5)
+ONRELEASEText = Text(ACTIONS, text="On Release", grid=[0, 3, 2, 1], size=11)
+ONRELEASE = ListBox(ACTIONS, items=[], grid=[0, 4, 2, 1], command=lambda:SeeElement())
+REMOVEFROMONRELEASE = PushButton(ACTIONS, text="-", grid=[0, 5, 1, 1], width=5)
+ADDTOONRELEASE = PushButton(ACTIONS, text="+", grid=[1, 5, 1, 1], width=5)
 
 
 
