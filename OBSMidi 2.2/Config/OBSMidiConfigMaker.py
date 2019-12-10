@@ -34,6 +34,16 @@ def Open_FC(value):
 		FCNumber.value = "Fader " + str(value)
 		FC.show(wait=True)
 
+def Close_BC():
+	for i in ONPRESS.items:
+		ONPRESS.remove(i)
+	for i in ONRELEASE.items:
+		ONRELEASE.remove(i)
+	BC.hide()
+
+def Close_FC():
+	pass
+
 
 def ChangeLayerA():
 	LayerA.disable()
@@ -127,7 +137,7 @@ def SelectTransition(value):
 		TRANSITIONDURATION.value = 300
 
 
-def RemoveFromOnPress():
+def AddToButton(value):
 	item = {}
 	if ACTION.value != "None":
 		Button = int(BCNumber.value[7:9])
@@ -163,11 +173,42 @@ def RemoveFromOnPress():
 			if SCENECOLLECTION.value != "":
 				item["SourceName"] = SCENECOLLECTION.value
 
-		#JSON["config_pad"]["Buttons"][str(Button)]["ActionOnPress"].append(item)
-	BC.info("info", str(item))
+		if str(Button) not in JSON["config_pad"]["Buttons"]:
+			JSON["config_pad"]["Buttons"][str(Button)] = {}
+		if value not in JSON["config_pad"]["Buttons"][str(Button)]:
+			JSON["config_pad"]["Buttons"][str(Button)][value] = []
+		JSON["config_pad"]["Buttons"][str(Button)][value].append(item)
 
+		if value == "ActionOnPress":
+			LIST = ONPRESS
+		else:
+			LIST = ONRELEASE
+		ListInput = str(len(LIST.items)) + "  " + item["Action"]
+		LIST.append(ListInput)
+	#BC.info("info", str(JSON))
 
+def RemoveFromButton(value):
+	if value == "ActionOnPress":
+		BOX = ONPRESS
+	else:
+		BOX = ONRELEASE
+	if BOX.value != None:
+		Button = int(BCNumber.value[7:9])
+		Index = ""
+		for i in BOX.value:
+			if i not in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+				break
+			Index = Index + i
+		Index = int(Index)
+		del JSON["config_pad"]["Buttons"][str(Button)][value][Index]
+		if len(JSON["config_pad"]["Buttons"][str(Button)][value]) == 0:
+			del JSON["config_pad"]["Buttons"][str(Button)][value]
+			if len(JSON["config_pad"]["Buttons"][str(Button)]) == 0:
+				del JSON["config_pad"]["Buttons"][str(Button)]
+		BOX.remove(BOX.value)
 
+def SeeElement():
+	pass
 
 
 
@@ -237,6 +278,7 @@ DEFAULTSCENECOLLECTION = TextBox(GENERALCONFIG, grid=[1, 3], width=25, text="Fre
 
 
 BC = Window(MAIN, title="Button Config")
+BC.when_closed=Close_BC
 BC.hide()
 BCNumber = Text(BC, text="Button ", align="top", size=15)
 BCBOX = Box(BC, align="top", layout="grid")
@@ -266,19 +308,20 @@ BCBOXSPACE = Box(BCBOX, grid=[1, 0], width=50)
 
 ACTIONS = Box(BCBOX, grid=[2, 0], layout="grid")
 ONPRESSText = Text(ACTIONS, text="On Press", grid=[0, 0, 2, 1], size=11)
-ONPRESS = ListBox(ACTIONS, items=[], grid=[0, 1, 2, 1], command=lambda:SeeElement())
-REMOVEFROMONPRESS = PushButton(ACTIONS, text="-", grid=[0, 2, 1, 1], width=5, command=RemoveFromOnPress)
-ADDTOONPRESS = PushButton(ACTIONS, text="+", grid=[1, 2, 1, 1], width=5)
+ONPRESS = ListBox(ACTIONS, items=[], grid=[0, 1, 2, 1], command=SeeElement)
+REMOVEFROMONPRESS = PushButton(ACTIONS, text="-", grid=[0, 2, 1, 1], width=5, command=lambda:RemoveFromButton("ActionOnPress"))
+ADDTOONPRESS = PushButton(ACTIONS, text="+", grid=[1, 2, 1, 1], width=5, command=lambda:AddToButton("ActionOnPress"))
 ONRELEASEText = Text(ACTIONS, text="On Release", grid=[0, 3, 2, 1], size=11)
-ONRELEASE = ListBox(ACTIONS, items=[], grid=[0, 4, 2, 1], command=lambda:SeeElement())
-REMOVEFROMONRELEASE = PushButton(ACTIONS, text="-", grid=[0, 5, 1, 1], width=5)
-ADDTOONRELEASE = PushButton(ACTIONS, text="+", grid=[1, 5, 1, 1], width=5)
+ONRELEASE = ListBox(ACTIONS, items=[], grid=[0, 4, 2, 1], command=SeeElement)
+REMOVEFROMONRELEASE = PushButton(ACTIONS, text="-", grid=[0, 5, 1, 1], width=5, command=lambda:RemoveFromButton("ActionOnRelease"))
+ADDTOONRELEASE = PushButton(ACTIONS, text="+", grid=[1, 5, 1, 1], width=5, command=lambda:AddToButton("ActionOnRelease"))
 
 
 
 
 
 FC = Window(MAIN, title="Fader Config")
+FC.when_closed=Close_FC
 FC.hide()
 FCNumber = Text(FC, text="Fader ", align="top", size=15)
 
