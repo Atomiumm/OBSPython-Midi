@@ -1,0 +1,158 @@
+If activated by fader, the first argument in "args" will be the height of the fader
+
+
+
+#Sets profile
+{
+	"Action":"OBS_Profile_Set",
+	"args":(),
+	"kwargs":{"ProfileName":ProfileName}
+}
+
+#Sets scene collection
+{
+	"Action":"OBS_SceneCollection_Set",
+	"args":(),
+	"kwargs":{"SceneCollectionName":SceneCollectionName}
+}
+
+#Sets scene (only if studio mode off)
+{
+	"Action":"OBS_Scene_Set",
+	"args":(),
+	"kwargs":{"SceneName":SceneName}
+}
+
+#Sets scene if studio mode off or preview if studio mode on
+{
+	"Action":"OBS_Scene_Set_Safe",
+	"args":(),
+	"kwargs":{"SceneName":SceneName}
+}
+
+#Sets transition mode
+{
+	"Action":"OBS_Transition_Set",
+	"args":(),
+	"kwargs":{"TransitionName":TransitionName}
+}
+
+#Sets transition duration
+{
+	"Action":"OBS_Transition_SetDuration",
+	"args":(duration,),
+	"kwargs":{"MinDuration":minduration, "MaxDuration":maxduration} #optional, default 0/1000
+}
+
+#Enables Studio Mode
+{
+	"Action":"OBS_StudioMode_Enable",
+	"args":(),
+	"kwargs":{}
+}
+
+#Disables Studio Mode
+{
+	"Action":"OBS_StudioMode_Disable",
+	"args":(),
+	"kwargs":{}
+}
+
+#Toggle Studio Mode
+{
+	"Action":"OBS_StudioMode_Toggle",
+	"args":(),
+	"kwargs":{}
+}
+
+#Sets preview (if studio mode on)
+{
+	"Action":"OBS_StudioMode_SetPreview",
+	"args":(),
+	"kwargs":{"SceneName":SceneName}
+}
+
+#Transitions preview to program
+{
+	"Action":"OBS_StudioMode_Transition",
+	"args":(),
+	"kwargs":{}
+}
+
+#Enables recording
+{
+	"Action":"OBS_Recording_Start",
+	"args":(),
+	"kwargs":{}
+}
+
+#Disables recording
+{
+	"Action":"OBS_Recording_Stop",
+	"args":(),
+	"kwargs":{}
+}
+
+#Toggles recording
+{
+	"Action":"OBS_Recording_Toggle",
+	"args":(),
+	"kwargs":{}
+}
+
+#Pauses recording
+{
+	"Action":"OBS_Recording_Pause",
+	"args":(),
+	"kwargs":{}
+}
+
+#Resumes recording
+{
+	"Action":"OBS_Recording_Resume",
+	"args":(),
+	"kwargs":{}
+}
+
+#Enables streaming
+{
+	"Action":"Streaming_Start",
+	"args":(),
+	"kwargs":{}
+}
+
+#Disables streaming
+{
+	"Action":"Streaming_Stop",
+	"args":(),
+	"kwargs":{}
+}
+
+#Toggles streaming
+{
+	"Action":"Streaming_Toggle",
+	"args":(),
+	"kwargs":{}
+}
+
+#Sets source volume
+{
+	"Action":"OBS_Sources_SetVolume",
+	"args":(volume,),
+	"kwargs":{"SourceName":SourceName,
+		"MinVolume":minvolume, "MaxVolume":maxvolume} #optional, default 0/1
+}
+
+#Sets source mute
+{
+	"Action":"OBS_Sources_SetMute",
+	"args":(),
+	"kwargs":{"SourceName":SourceName, "muteStatus":mutestatus} #mutestatus True/False
+}
+
+#Toggles source mute
+{
+	"Action":"OBS_Sources_ToggleMute",
+	"args":(),
+	"kwargs":{"SourceName":SourceName}
+}
